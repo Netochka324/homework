@@ -78,3 +78,4 @@ try:
 except NameError:
     print('Ошибка - переменная с таким именем не найдена!')
 # rghuhrhvjhgjgjj
+# посадил дед репку
