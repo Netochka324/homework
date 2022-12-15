@@ -30,7 +30,7 @@ def is_one_digit(v):
 # проверка простых вычислений
 def check(val, v3):
     msg = ""
-    if all(map(lambda x: is_one_digit(float(x)), val)):
+    if all(map(lambda x: is_one_digit(float(x)), val)) and v3 not in '!√':
         msg = msg + msg_6
     if any(map(lambda x: float(x) == 1, val)) and v3 in '*^':
         msg = msg + msg_7
@@ -94,7 +94,7 @@ while not flag:
     txt = input(msg_0)
     # вычленение оператора
     if txt.strip('-').strip('!').strip('√').replace('.', '').isdigit():
-        oper = list(x for x in '√!' if x in txt)
+        oper = [x for x in '√!' if x in txt]
     else:
         oper = [txt[i] for i in range(1, len(txt)-1) if txt[i] in '+-/*^' and txt[i-1].isdigit()
                 and (txt[i+1].isdigit() or txt[i+1] == '-')]
