@@ -1,17 +1,6 @@
 from math import factorial, sqrt
 
-msg_0 = '''Введите арифметическое выражение для подсчета. 
-Вам доступны следующие операции: 
-- сложение (x+y)
-- вычитание (x-y)
-- умножение (x*y)
-- деление (x/y)
-- возведение числа в степень (x^y)
-- вычисление факториала числа (x!)
-- вычисление кватратного корня числа (√x)
-Для проведения вычислений с данными из памяти вместо числа наберите М.
-Ваше выражение:
-'''
+msg_0 = 'Ваше выражение: '
 msg_1 = [
     "Вы знаете, что такое арифметические операции?",
     "Вы вообще знаете, что такое цифры? Будьте внимательны! Числа должны быть действительными!",
@@ -43,7 +32,7 @@ def check(val, v3):
     msg = ""
     if all(map(lambda x: is_one_digit(float(x)), val)):
         msg = msg + msg_6
-    if any(map(lambda x: float(x) == 1, val)) and v3 in '*!√^':
+    if any(map(lambda x: float(x) == 1, val)) and v3 in '*^':
         msg = msg + msg_7
     if any(map(lambda x: float(x) == 0, val)) and v3 in '*+-':
         msg = msg + msg_8
@@ -87,25 +76,44 @@ operations = {
     '!': my_factor
 }
 
+print('''Введите арифметическое выражение для подсчета. 
+Вам доступны следующие операции: 
+- сложение (x+y)
+- вычитание (x-y)
+- умножение (x*y)
+- деление (x/y)
+- возведение числа в степень (x^y)
+- вычисление факториала числа (x!)
+- вычисление квадратного корня числа (√x)
+Для проведения вычислений с данными из памяти вместо числа наберите М.''')
+
 flag = 0
 memory = 0
 while not flag:
-    # проверка данных
+    # ввод данных
     txt = input(msg_0)
-    oper = [b for b in txt[1:] if b in '+-/*^√!']
+    # вычленение оператора
+    if txt.strip('-').strip('!').strip('√').replace('.', '').isdigit():
+        oper = list(x for x in '√!' if x in txt)
+    else:
+        oper = [txt[i] for i in range(1, len(txt)-1) if txt[i] in '+-/*^' and txt[i-1].isdigit()
+                and (txt[i+1].isdigit() or txt[i+1] == '-')]
 
+    # проверка данных и поиск чисел в исходных данных
     if oper and len(oper) == 1:
         oper = oper[0]
         inn = [c for c in txt.split(oper) if c]
-        if all(map(lambda x: x.isdigit(), inn)):
+        if all(map(lambda x: str(abs(float(x))).replace('.', '').isdigit(), inn)):
             if oper in '+-/*^' and len(inn) == 2 or oper in '√!' and len(inn) == 1 and float(inn[0]) > 0:
                 # чтение данных из memory
-                if inn[0] == 'M': inn[0] = memory
-                elif len(inn) > 1 and inn[1] == 'M': inn[1] = memory
+                if inn[0] == 'M':
+                    inn[0] = memory
+                elif len(inn) > 1 and inn[1] == 'M':
+                    inn[1] = memory
 
                 # проверка на малые значения
                 check(inn, oper)
-                   
+
                 try:
                     inn = list(map(float, inn))
                     result = operations[oper](*inn)
@@ -155,8 +163,9 @@ while not flag:
                         else:
                             flag3 = 0
 
-            else: print(msg_1[2])
-        else: print(msg_1[1])
-    else: print(msg_1[0])
-        
-
+            else:
+                print(msg_1[2])
+        else:
+            print(msg_1[1])
+    else:
+        print(msg_1[0])
