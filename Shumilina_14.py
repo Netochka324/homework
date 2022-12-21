@@ -19,13 +19,10 @@ print(privet(input('Введите имя: ')))
 print('Task2')
 
 
-def razr(n):
-    return len(str(n)) - 1
-
-
 def my_sum(num):
+    razr = len(str(num)) - 1
     if num > 0:
-        return num // (10 ** razr(num)) + my_sum(num % (10 ** razr(num)))
+        return num // (10 ** razr) + my_sum(num % (10 ** razr))
     else:
         return 0
 
