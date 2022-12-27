@@ -4,7 +4,7 @@ msg_0 = 'Ваше выражение: '
 msg_1 = [
     "Вы знаете, что такое арифметические операции?",
     "Вы вообще знаете, что такое цифры? Будьте внимательны! Числа должны быть действительными!",
-    "Для факториала и квадратного корня число должно быть также неотрицательным."
+    "Для факториала число должно быть также неотрицательным."
 ]
 msg_2 = "Даа ... интересная арифметическая операция. Вы проспали весь школьный курс по математике, не так ли?"
 msg_3 = "Мдаа ... деление на 0. Умный шаг..."
@@ -93,7 +93,7 @@ while not flag:
     # ввод данных
     txt = input(msg_0)
     # вычленение оператора
-    if txt.strip('-').strip('!').strip('√').replace('.', '').isdigit():
+    if txt.strip('!').strip('√').strip('-').replace('.', '').isdigit():
         oper = [x for x in '√!' if x in txt]
     else:
         oper = [txt[i] for i in range(1, len(txt)-1) if txt[i] in '+-/*^' and txt[i-1].isdigit()
@@ -104,7 +104,9 @@ while not flag:
         oper = oper[0]
         inn = [c for c in txt.split(oper) if c]
         if all(map(lambda x: str(abs(float(x))).replace('.', '').isdigit(), inn)):
-            if oper in '+-/*^' and len(inn) == 2 or oper in '√!' and len(inn) == 1 and float(inn[0]) > 0:
+            if oper in '+-/*^' and len(inn) == 2 \
+                    or oper == '√' and len(inn) == 1 \
+                    or oper == '!' and len(inn) == 1 and float(inn[0]) > 0:
                 # чтение данных из memory
                 if inn[0] == 'M':
                     inn[0] = memory

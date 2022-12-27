@@ -23,12 +23,12 @@ class MyClass:
         elif type(inn) in (int, float):
             inn_str = str(inn).replace('-', '').replace('.', '')
             sum_even_numbers = sum([int(x) for x in inn_str if not int(x) % 2])
-            print(sum_even_numbers * self.my_len(inn))
+            print(sum_even_numbers * self.my_len(inn_str))
         else:
             print(f'Для типа данных {type(inn)} действий не предусмотрено')
 
     def my_len(self, inn):
-        return len((str(inn)).replace('-', '').replace('.', ''))
+        return len(str(inn))
 
 
 obj = MyClass()
