@@ -6,7 +6,7 @@ with sq.connect('Shumilina.db') as conn:
     cursor = conn.cursor()  # cursor - указатель на таблицу БД
 
     # Если таблицы существуют - удаляем их
-    cursor.execute('''DROP TABLE IF EXISTS fio''')
+    # cursor.execute('''DROP TABLE IF EXISTS fio''')
     cursor.execute('''DROP TABLE IF EXISTS animals''')
 
     # Создадим таблицу в fio БД
@@ -19,9 +19,17 @@ with sq.connect('Shumilina.db') as conn:
     ''')
 
     # Заполнение fio
-    cursor.execute('''INSERT INTO fio VALUES ('Анна', 'Шумилина', 37)''')
-    cursor.execute('''INSERT INTO fio VALUES ('Светлана', 'Ерошкина', 28)''')
-    cursor.execute('''INSERT INTO fio VALUES ('Степан', 'Перевертев', 30)''')
+    inn = [
+        ('Анна', 'Шумилина', 37),
+        ('Светлана', 'Ерошкина', 28),
+        ('Степан', 'Перевертев', 30)
+    ]
+
+    for x in inn:
+        try:
+            cursor.execute('''INSERT INTO fio VALUES x''')
+        except sq.OperationalError:
+            print(' '.join(map(str, x)), '- данная запись в базе существует и дублироваться не будет')
 
     # Создадим таблицу animals в БД
     cursor.execute('''
@@ -49,3 +57,5 @@ with sq.connect('Shumilina.db') as conn:
     cursor.execute('''SELECT * FROM animals''')
     for rez in cursor:
         print(*rez)
+
+
