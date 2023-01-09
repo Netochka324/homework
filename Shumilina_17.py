@@ -12,7 +12,7 @@ with sq.connect('Shumilina.db') as conn:
     # Создадим таблицу в fio БД
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS fio(
-            имя TEXT, 
+            имя TEXT PRIMARY KEY, 
             фамилия TEXT,
             возраст INTEGER
         )
@@ -25,10 +25,11 @@ with sq.connect('Shumilina.db') as conn:
         ('Степан', 'Перевертев', 30)
     ]
 
+    # cursor.executemany('INSERT INTO fio VALUES(?, ?, ?)', inn)
     for x in inn:
         try:
-            cursor.execute('''INSERT INTO fio VALUES x''')
-        except sq.OperationalError:
+            cursor.execute('INSERT INTO fio VALUES(?, ?, ?)', x)
+        except sq.IntegrityError:
             print(' '.join(map(str, x)), '- данная запись в базе существует и дублироваться не будет')
 
     # Создадим таблицу animals в БД
@@ -57,5 +58,4 @@ with sq.connect('Shumilina.db') as conn:
     cursor.execute('''SELECT * FROM animals''')
     for rez in cursor:
         print(*rez)
-
 
